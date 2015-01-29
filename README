@@ -1,0 +1,25 @@
+1. General functions
+	there are some functions for the whole program in "kmc_system.h", e.g., ran_generator, pbc, error
+2. states array in functions
+	if named "*states_#$%^&*": means this pointer won't change the position, i.e., array elements will be *(states_#$%^&* + i_iteration)
+	if named "ptr_states":	   means this pointer will change the position, i.e., array elements will be *ptr_states and *ptr_states ++
+3. array passing can be difficult
+	1-d: 
+		call:    func(array)
+		declare: func(int array[]) or func(int *array)
+		use:     array[i]
+	2-d:
+		call:    func(array)
+		declare: func(int array[][3]) or int (*array)[3]
+		use:     array[i][j] or (*(array+i))[j]
+	3-d:
+		call:    func(&array[0][0][0])
+		declare: func(int *array)
+		use:     *(array+i*ny*nz+j*nz+k)
+4. energy diffs are calculated locally:
+	1. choose a vacancy
+	2. get all the 1st neighbor positions
+	3. get all the 2nd neighbor positions of the 1st neighbor positions of the vacancy
+	4. get the boundaries of all the above positions, i.e., if(x<xlo) xlo= x; if(x>xhi) xhi=x;
+	5. only calculate energies within the ranges; the boundaries have to calculate again when loop to a new vacancy
+5. store only the change of state information (history.info)

@@ -1,0 +1,92 @@
+void write_dt(double t, double dt);
+void cal_csize(double totaltime, int *states_cc); // output property: cluster sizes
+
+void class_system::write_dt(double t, double dt){
+	if(t==dt){
+		ofstream of_dt("./dt", ios::trunc);
+		if(!of_dt.is_open()) error(1, "(write_dt) the file is not opened!");
+		of_dt.close();
+	}
+
+	ofstream of_dt("./dt", ios::app);
+	of_dt.seekp(0, ios_base::end);
+	if(!of_dt.is_open()) error(1, "(write_dt) the file is not opened!");
+
+	of_dt << t << " " << dt << endl;
+}
+
+void class_system::cal_csize(double totaltime, int *states_cc){ // output property: cluster sizes
+	vector <int> i_ing;  //	the indexs which are being counted
+	vector <int> i_ed;   // the indexs which has been counted
+	vector <int> csize;  // store the sizes of clusters
+
+	int i_ltcp=-1;
+	i_ed.clear();
+	csize.clear();
+	for(int i=0; i<nx; i ++){
+		for(int j=0; j<ny; j ++){
+			for(int k=0; k<nz; k ++){
+				i_ltcp ++;
+
+				if(*(states_cc+i_ltcp)==0){
+					int nvcc= 1;
+				
+					for(int a=0; a<i_ed.size(); a ++) // check if the vacancy has been counted before
+						if(i_ltcp==i_ed.at(a)) goto counted;
+					
+					i_ing.clear();
+					i_ing.push_back(i_ltcp);
+					
+					for(int a=0; a<i_ing.size(); a++){ // !! be careful here: i_ing.size() increases during iteration and automatically changes the condition
+						int x= (int) (i_ing.at(a)/nz)/ny;
+						int y= (int) (i_ing.at(a)/nz)%ny;
+						int z= (int)  i_ing.at(a)%nz;
+
+						for(int b=0; b<n1nbr; b ++){
+							int x2= pbc(x+(*(v1nbr+b))[0], nx);
+							int y2= pbc(y+(*(v1nbr+b))[1], ny);
+							int z2= pbc(z+(*(v1nbr+b))[2], nz);
+
+							if(x2 != pbc(x+v1nbr[b][0], nx)) error(1, "(cal_csize) v1nbr error"); // DELETE IT !!
+							if(y2 != pbc(y+v1nbr[b][1], ny)) error(1, "(cal_csize) v1nbr error"); // DELETE IT !!
+							if(z2 != pbc(z+v1nbr[b][2], nz)) error(1, "(cal_csize) v1nbr error"); // DELETE IT !!
+
+							if(*(states_cc+ x2*ny*nz + y2*nz + z2)==0){
+								bool IsNew= true;
+								for(int c=0; c<i_ing.size(); c++)
+									if((x2*ny*nz+y2*nz+z2) == i_ing.at(c)) IsNew=false;
+
+								if(IsNew){
+									nvcc ++;
+									i_ing.push_back(x2*ny*nz+y2*nz+z2);
+								}
+							}
+						}
+					}
+
+					csize.push_back(nvcc);
+					for(int a=0; a<i_ing.size(); a++) i_ed.push_back(i_ing.at(a));
+
+					counted:;
+				}
+	}}}
+
+	int nV_check=0;
+	int output[5]={0, 0, 0, 0, 0}; //clusters for: single, l>1, l>5, l>10, l>30
+	for(int i=0; i<csize.size(); i++){
+		nV_check += csize.at(i);
+
+		if(csize.at(i)>30) output[4] ++;
+		if(csize.at(i)>10) output[3] ++;
+		if(csize.at(i)>5)  output[2] ++;
+		if(csize.at(i)>1)  output[1] ++;
+		if(csize.at(i)==1) output[0] ++;
+	}
+	if(nV_check != *nV) error(1, "(cal_csize) numbers of nV dont consist: ", 2, *nV, nV_check);
+	
+	if(0==totaltime)	ofstream of_csize("./csize", ios::trunc);
+	ofstream of_csize("./csize", ios::app);
+	of_csize.seekp(0, ios_base::end);
+	if(!of_csize.is_open()) error(1, "(cal_csize) the file is not opened!");
+	of_csize << totaltime << " " << output[0] << " " << output[1] << " " << output[2] << " " << output[3] << " " << output[4] << endl;
+}						
