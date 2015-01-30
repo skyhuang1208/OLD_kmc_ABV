@@ -33,7 +33,7 @@ const double par_consk2=                         0;
 const double par_consj2=                 -0.009985;
 const double par_consu2=                 -0.009985;
 
-const bool par_isrestart=		      true;
+const bool par_isrestart=		     false;
 
 // Bond-formulation parameters
 // 	e1AV= e1VA= 0.04732

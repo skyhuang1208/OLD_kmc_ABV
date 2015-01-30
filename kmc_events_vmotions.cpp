@@ -7,27 +7,16 @@
 using namespace std;
 
 double class_events::vac_jump(vector <double> &v_rate, vector <int> &v_ivcc, vector <int> &v_inbr){
-	int states_temp[nx][ny][nz];
-	for(int i=0; i<nx; i ++){ // assign values to temp. states array
-		for(int j=0; j<ny; j ++){
-			for(int k=0; k<nz; k ++){
-				states_temp[i][j][k]= *(states + i*ny*nz + j*nz + k);
-	}}}
-
 	double sum_rate= 0;
 	if(*nV != list_vcc.size()) error(2, "(vac_jump) vacancy number inconsistent");
+	
 	for(int ivcc=0; ivcc < *nV; ivcc ++){
 		int i= (int) (list_vcc.at(ivcc)/nz)/ny;
 		int j= (int) (list_vcc.at(ivcc)/nz)%ny;
 		int k= (int)  list_vcc.at(ivcc)%nz;
 
-		if(states_temp[i][j][k] !=0) error(2, "(vac_jump) there's an non-vacancy in the vacancy list");
+		if(*(states+ i*ny*nz+ j*nz+ k) != 0) error(2, "(vac_jump) there's an non-vacancy in the vacancy list");
 		
-		int xlo=i-2, xhi=i+2;
-		int ylo=j-2, yhi=j+2;
-		int zlo=k-2, zhi=k+2;
-		double locale_before= cal_energy(&states_temp[0][0][0], xlo, xhi, ylo, yhi, zlo, zhi);
-
 		for(int a=0; a<n1nbr; a ++){
 			int x= pbc(i+(*(v1nbr+a))[0], nx);
 			int y= pbc(j+(*(v1nbr+a))[1], ny);
@@ -37,22 +26,24 @@ double class_events::vac_jump(vector <double> &v_rate, vector <int> &v_ivcc, vec
 				v_ivcc.push_back(ivcc);
 				v_inbr.push_back(a);
 				
-				double em_xyz, mu_xyz;
-				if(*(states+x*ny*nz+y*nz+z)==1){ em_xyz= emA; mu_xyz= muA;} 
-				else			       { em_xyz= emB; mu_xyz= muB;}
+				double em, mu;
+				if(*(states+ x*ny*nz+ y*nz+ z)==1) { em= emA; mu= muA;} 
+				else				   { em= emB; mu= muB;}
 
-				states_temp[i][j][k]= states_temp[x][y][z];
-				states_temp[x][y][z]= 0;
+				double e0= cal_energy(i, j, k, x, y, z);
 
-				double ediff= cal_energy(&states_temp[0][0][0],xlo,xhi,ylo,yhi,zlo,zhi) - locale_before; // LOCALLY
+				*(states+ i*ny*nz+ j*nz+ k)= *(states+ x*ny*nz+ y*nz+ z);
+				*(states+ x*ny*nz+ y*nz+ z)= 0;
+
+				double ediff= cal_energy(i, j, k, x, y, z) - e0;
 				
-				if(ediff >0) v_rate.push_back(mu_xyz * exp(-beta*(em_xyz+ediff)));
-				else	     v_rate.push_back(mu_xyz * exp(-beta*(em_xyz)));
+				*(states+ x*ny*nz+ y*nz+ z)= *(states+ i*ny*nz+ j*nz+ k);
+				*(states+ i*ny*nz+ j*nz+ k)= 0;
+				
+				if(ediff >0) v_rate.push_back(mu * exp(-beta*(em+ediff)));
+				else	     v_rate.push_back(mu * exp(-beta*(em)));
 							
 				sum_rate += v_rate.back();
-				
-				states_temp[x][y][z]= states_temp[i][j][k]; // restore states_temp array to the "original" states array
-				states_temp[i][j][k]= 0;
 			}
 		}
 	}

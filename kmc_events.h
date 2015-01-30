@@ -30,7 +30,7 @@ class class_events{
 		int *nA, *nB, *nV, *nI;	// # of atoms, vacancies, instls; pass by pointers
 
 		FILE * out_his;		// OFstream of the history file
-		int *states;		// Don't change the address of this!
+		int* const states;	// Don't change the address of this!
 		vector <int> list_vcc;	// A list contains indexs of all vacancies
 		vector <int> list_int;	// A list contains indexs of all interstitials
 
@@ -48,7 +48,7 @@ class class_events{
 		//////functions for all events//////
 		void write_his(int state, int i_ltcp);
 		void write_his_time(double dt);
-		double cal_energy(int *states_ce, int xlo, int xhi, int ylo, int yhi, int zlo, int zhi); // Ising model
+		double cal_energy(int x1, int y1, int z1, int x2, int y2, int z2); 
 		void init_list_vcc();
 
 		//////functions for vacancies //////

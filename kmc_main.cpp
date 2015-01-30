@@ -46,14 +46,14 @@ int main(int nArg, char *Arg[]){
 	cout << "\n########## The Simulation Begins !! ##########" << endl;
 	int    timestep=  ts_bg; 
 	double totaltime= time_bg;
+	cout << "TIMESTEP() TIME(s) ETOTAL(eV)" << endl;
 	while((totaltime<= time_bg+par_tend) && (timestep != ts_bg+par_tstep)){
 		// CALCULATION
 		events.events_main(timestep, totaltime);
 
 		// OUTPUT DATA
 		if(0==timestep%STEP_LOG){
-			cout << "TIMESTEP:" << timestep << endl;
-			cout << "Time: " << totaltime << " (s)" << endl << endl;
+			cout << timestep << totaltime << sys.cal_energy(&states[0][0][0]) << endl;
 		}
 		if(0==timestep%par_confts){
 			sys.write_conf(timestep, totaltime, &states[0][0][0]);
