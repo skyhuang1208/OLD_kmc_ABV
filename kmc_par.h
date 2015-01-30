@@ -3,15 +3,15 @@
 
 const char   par_ltc[4]=		"BCC";
 
-const int    par_nx=                      100;
-const int    par_ny=                      100;
-const int    par_nz=                      100;
+const int    par_nx=                       64;
+const int    par_ny=                       64;
+const int    par_nz=                       64;
 
 const double par_compA=                  0.97; // composition of A atoms
 const int    par_nV=                        1;
 
 const double par_tend=                   1e13; 	// toal time (s)
-const double par_tstep=                   100; 	// toal timestep (give a minus step to ignore this quiterior to end the simulation)
+const int    par_tstep=                   1e5; 	// toal timestep (give a minus step to ignore this quiterior to end the simulation)
 const int    par_confts=                  1e7;	// timestep that output a conf file for restart later
 
 const char   par_hisname[20]=       "history";

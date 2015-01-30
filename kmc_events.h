@@ -25,6 +25,7 @@ class class_events{
 		void events_main(int& timestep, double& totaltime);
 		void input_par(double beta_, double muA_, double muB_, double emA_, double emB_,
 			       double cons_k1_, double cons_j1_, double cons_u1_, double cons_k2_, double cons_j2_, double cons_u2_);
+		double cal_energy(int* const states_ce);
 	private:
 		int nx, ny, nz;		// system size 
 		int *nA, *nB, *nV, *nI;	// # of atoms, vacancies, instls; pass by pointers

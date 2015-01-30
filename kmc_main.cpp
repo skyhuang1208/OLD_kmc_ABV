@@ -52,14 +52,17 @@ int main(int nArg, char *Arg[]){
 		events.events_main(timestep, totaltime);
 
 		// OUTPUT DATA
-		if(0==timestep%STEP_LOG){
-			cout << timestep << totaltime << sys.cal_energy(&states[0][0][0]) << endl;
-		}
+		if(0==timestep%STEP_LOG)
+			cout << timestep << " " << totaltime << " " << events.cal_energy(&states[0][0][0]) << endl;
+		
 		if(0==timestep%par_confts){
 			sys.write_conf(timestep, totaltime, &states[0][0][0]);
-			cout << "Output conf files at: " << timestep << endl << endl;
+			cout << "Output conf files at: " << timestep << endl;
 		}
 	}
+
+	// finalizing
+	cout << timestep << " " << totaltime << " " << events.cal_energy(&states[0][0][0]) << endl;
 	sys.write_conf(timestep, totaltime, &states[0][0][0]); cout << "Output conf files at: " << timestep << endl;
 
 	int tfcpu= time(0);

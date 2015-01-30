@@ -39,8 +39,8 @@ class class_system{
 		}
 		
 		// Functions
-		void init_states_array(int nVset, double compA, int *states000);
-		void read_restart(char name_restart[], int *states000, int &ts_initial, double &time_initial);
+		void init_states_array(int nVset, double compA, int* const states000);
+		void read_restart(char name_restart[], int* const states000, int &ts_initial, double &time_initial);
 		void write_conf(int timestep, double time, int *ptr_states);
 
 	private:

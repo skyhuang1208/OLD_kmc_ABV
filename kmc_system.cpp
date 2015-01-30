@@ -108,7 +108,7 @@ void class_system::ltc_constructor(){
 	}}
 }
 
-void class_system::init_states_array(int nVset, double compA, int *states000){
+void class_system::init_states_array(int nVset, double compA, int* const states000){
 	// STATE 0: vacancy, 1: A atom, -1: B atom
 
 	int putV= (nx*ny*nz)/nVset;
@@ -145,7 +145,7 @@ void class_system::init_states_array(int nVset, double compA, int *states000){
 	cout << "Atype B: " << *nB << ", pct: " << 100* (double) *nB/(nAtotal) << "%" << endl;
 }
 
-void class_system::read_restart(char name_restart[], int *states000, int &ts_initial, double &time_initial){
+void class_system::read_restart(char name_restart[], int* const states000, int &ts_initial, double &time_initial){
 	ifstream if_re(name_restart, ios::in);
 	if(!if_re.is_open()) error(1, "(read_restart) the file is not opened!");
 	
