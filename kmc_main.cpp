@@ -6,8 +6,6 @@
 #include "kmc_events.h"
 using namespace std;
 
-#define STEP_LOG 10000
-
 int main(int nArg, char *Arg[]){
 	int t0cpu= time(0);
 
@@ -46,7 +44,7 @@ int main(int nArg, char *Arg[]){
 	cout << "\n########## The Simulation Begins !! ##########" << endl;
 	int    timestep=  ts_bg; 
 	double totaltime= time_bg;
-	cout << "TIMESTEP() TIME(s) ETOTAL(eV)" << endl;
+	int STEP_LOG= par_tstep/2000; cout << "TIMESTEP() TIME(s) ETOTAL(eV)" << endl;
 	while((totaltime<= time_bg+par_tend) && (timestep != ts_bg+par_tstep)){
 		// CALCULATION
 		events.events_main(timestep, totaltime);
@@ -62,8 +60,12 @@ int main(int nArg, char *Arg[]){
 	}
 
 	// finalizing
-	cout << timestep << " " << totaltime << " " << events.cal_energy(&states[0][0][0]) << endl;
-	sys.write_conf(timestep, totaltime, &states[0][0][0]); cout << "Output conf files at: " << timestep << endl;
+	if(timestep%STEP_LOG != 0)   
+		cout << timestep << " " << totaltime << " " << events.cal_energy(&states[0][0][0]) << endl;
+	if(timestep%par_confts != 0){ 
+		sys.write_conf(timestep, totaltime, &states[0][0][0]); 
+		cout << "Output conf files at: " << timestep << endl;
+	}
 
 	int tfcpu= time(0);
 	cout << "**** The simulation is done! Total CPU time: " << tfcpu - t0cpu << " secs ****" << endl;

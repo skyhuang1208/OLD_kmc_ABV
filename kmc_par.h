@@ -11,8 +11,8 @@ const double par_compA=                  0.97; // composition of A atoms
 const int    par_nV=                        1;
 
 const double par_tend=                   1e13; 	// toal time (s)
-const int    par_tstep=                   1e5; 	// toal timestep (give a minus step to ignore this quiterior to end the simulation)
-const int    par_confts=                  1e7;	// timestep that output a conf file for restart later
+const int    par_tstep=                 10000; 	// toal timestep (give a minus step to ignore this quiterior to end the simulation)
+const int    par_confts=          par_tstep/5;	// timestep that output a conf file for restart later
 
 const char   par_hisname[20]=       "history";
 
