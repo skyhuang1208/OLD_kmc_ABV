@@ -38,37 +38,38 @@ int main(int nArg, char *Arg[]){
 	}
 
 	cout << "\n########## Initializing Events ... ##########" << endl;
-	class_events events(par_nx, par_ny, par_nz, &nA, &nB, &nV, &nI, &states[0][0][0], sys.n1nbr, sys.v1nbr, sys.n2nbr, sys.v2nbr, par_hisname, par_isrestart); 
+	class_events events(par_nx, par_ny, par_nz, &nA, &nB, &nV, &nI, &states[0][0][0], sys.n1nbr, sys.v1nbr, sys.n2nbr, sys.v2nbr, 
+			    par_name_sol, par_name_vcc, par_isrestart); 
 	events.input_par(par_beta, par_muA, par_muB, par_emA, par_emB, par_consk1, par_consj1, par_consu1, par_consk2, par_consj2, par_consu2);
 
 	cout << "\n########## The Simulation Begins !! ##########" << endl;
 	int    timestep=  ts_bg; 
 	double totaltime= time_bg;
-	int STEP_LOG= par_tstep/2000; cout << "TIMESTEP() TIME(s) ETOTAL(eV)" << endl;
+	int STEP_LOG= par_tstep/2000; cout << "TIMESTEP() TIME(s) ETOTAL(eV)";
 	while((totaltime<= time_bg+par_tend) && (timestep != ts_bg+par_tstep)){
 		// CALCULATION
 		events.events_main(timestep, totaltime);
 
 		// OUTPUT DATA
 		if(0==timestep%STEP_LOG)
-			cout << timestep << " " << totaltime << " " << events.cal_energy(&states[0][0][0]) << endl;
+			cout << endl << timestep << " " << totaltime << " " << events.cal_energy(&states[0][0][0]) << " ";
 		
 		if(0==timestep%par_confts){
 			sys.write_conf(timestep, totaltime, &states[0][0][0]);
-			cout << "Output conf files at: " << timestep << endl;
+			cout << "<Output conf files at: " << timestep << ">";
 		}
 	}
 
 	// finalizing
 	if(timestep%STEP_LOG != 0)   
-		cout << timestep << " " << totaltime << " " << events.cal_energy(&states[0][0][0]) << endl;
+		cout << endl << timestep << " " << totaltime << " " << events.cal_energy(&states[0][0][0]) << endl;
 	if(timestep%par_confts != 0){ 
 		sys.write_conf(timestep, totaltime, &states[0][0][0]); 
-		cout << "Output conf files at: " << timestep << endl;
+		cout << "Output conf files at: " << timestep;
 	}
 
 	int tfcpu= time(0);
-	cout << "**** The simulation is done! Total CPU time: " << tfcpu - t0cpu << " secs ****" << endl;
+	cout << "\n**** The simulation is done! Total CPU time: " << tfcpu - t0cpu << " secs ****" << endl;
 
 	return 0;
 }

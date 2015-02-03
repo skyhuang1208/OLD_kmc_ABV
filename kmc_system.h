@@ -33,7 +33,7 @@ class class_system{
 			cout << "Setting: " << endl << "nx= " << nx << ", ny= " << ny << ", nz= " << nz << endl;
 			cout << "The crystal structure is: " << type_ltc << endl;
 			for(int i=0; i<3; i++)
-				cout << vbra[i][0] << " " << vbra[i][1] << " " << vbra[i][2] << endl;
+				cout << "v" << i << ": " << vbra[i][0] << " " << vbra[i][1] << " " << vbra[i][2] << endl;
 			cout << "And the number of 1st neighbors: " << n1nbr << endl;
 			cout << "    the number of 2nd neighbors: " << n2nbr << endl;
 		}

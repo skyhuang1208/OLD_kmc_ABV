@@ -9,16 +9,24 @@ using namespace std;
 class class_events{
 	public:
 		class_events(int nx_, int ny_, int nz_, int *nA_, int *nB_, int *nV_, int *nI_, int *states_, 
-			     int n1nbr_, int v1nbr_[][3], int n2nbr_, int v2nbr_[][3], const char hisname[], bool isrestart):
+			     int n1nbr_, int v1nbr_[][3], int n2nbr_, int v2nbr_[][3], const char name_sol[], const char name_vcc[], bool isrestart):
 		nx(nx_), ny(ny_), nz(nz_), 
 		nA(nA_), nB(nB_), nV(nV_), nI(nI_),
 		states(states_),
 		n1nbr(n1nbr_), v1nbr(v1nbr_), n2nbr(n2nbr_), v2nbr(v2nbr_)
 		{
 			init_list_vcc();
-			if(isrestart) 	out_his= fopen(hisname, "a");
-			else		out_his= fopen(hisname, "w");
-			if(NULL==out_his) error(2, "(class_events) the history file was not opened!");
+
+			if(isrestart){
+				his_sol= fopen(name_sol, "a");
+				his_vcc= fopen(name_vcc, "a");
+			}
+			else{
+				his_sol= fopen(name_sol, "w");
+				his_vcc= fopen(name_vcc, "w");
+			}
+			if(NULL==his_sol) error(2, "(class_events) the solute  history file was not opened!");
+			if(NULL==his_vcc) error(2, "(class_events) the vacancy history file was not opened!");
 		}
 		
 		// functions
@@ -30,7 +38,8 @@ class class_events{
 		int nx, ny, nz;		// system size 
 		int *nA, *nB, *nV, *nI;	// # of atoms, vacancies, instls; pass by pointers
 
-		FILE * out_his;		// OFstream of the history file
+		FILE * his_sol;		// history file of solute atoms
+		FILE * his_vcc;		// history file of vacancy and time: record every several steps
 		int* const states;	// Don't change the address of this!
 		vector <int> list_vcc;	// A list contains indexs of all vacancies
 		vector <int> list_int;	// A list contains indexs of all interstitials
@@ -47,8 +56,8 @@ class class_events{
 		bool is_e2nbr;
 
 		//////functions for all events//////
-		void write_his(int state, int i_ltcp);
-		void write_his_time(double dt);
+		void write_hissol(int timestep, int ltcp_from, int ltcp_to);
+		void write_hisvcc(int timestep, double totaltime);
 		double cal_energy(int x1, int y1, int z1, int x2, int y2, int z2); 
 		void init_list_vcc();
 

@@ -14,7 +14,8 @@ const double par_tend=                   1e13; 	// toal time (s)
 const int    par_tstep=                 10000; 	// toal timestep (give a minus step to ignore this quiterior to end the simulation)
 const int    par_confts=          par_tstep/5;	// timestep that output a conf file for restart later
 
-const char   par_hisname[20]=       "history";
+const char   par_name_sol[20]=      "history.sol";
+const char   par_name_vcc[20]=      "history.vcc";
 
 // Ising model energy calculation parameters
 const double par_temp=                       773.0; // 500c
