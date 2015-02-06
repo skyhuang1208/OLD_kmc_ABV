@@ -186,7 +186,7 @@ void class_system::read_restart(char name_restart[], int* const states000, int &
 	if_re.close();
 }
 
-void class_system::write_conf(int timestep, double time, int *ptr_states){
+void class_system::write_conf(long long int timestep, double time, int *ptr_states){
 	ofstream of_xyz;
 	ofstream of_ltcp;
 	if(0==timestep){
@@ -195,8 +195,8 @@ void class_system::write_conf(int timestep, double time, int *ptr_states){
 	}
 	else{
 		char name_xyz[40], name_ltcp[40];
-		sprintf(name_xyz, "%d", timestep);  strcat(name_xyz, ".xyz");
-		sprintf(name_ltcp, "%d", timestep); strcat(name_ltcp, ".ltcp");
+		sprintf(name_xyz, "%lld", timestep);  strcat(name_xyz, ".xyz");
+		sprintf(name_ltcp, "%lld", timestep); strcat(name_ltcp, ".ltcp");
 		
 		of_xyz.open(name_xyz);
 		of_ltcp.open(name_ltcp);

@@ -8,9 +8,9 @@ using namespace std;
 
 class class_events{
 	public:
-		class_events(int nx_, int ny_, int nz_, int *nA_, int *nB_, int *nV_, int *nI_, int *states_, 
+		class_events(int step_write_his_, int nx_, int ny_, int nz_, int *nA_, int *nB_, int *nV_, int *nI_, int *states_, 
 			     int n1nbr_, int v1nbr_[][3], int n2nbr_, int v2nbr_[][3], const char name_sol[], const char name_vcc[], bool isrestart):
-		nx(nx_), ny(ny_), nz(nz_), nA(nA_), nB(nB_), nV(nV_), nI(nI_),
+		step_write_his(step_write_his_), nx(nx_), ny(ny_), nz(nz_), nA(nA_), nB(nB_), nV(nV_), nI(nI_),
 		states(states_), n1nbr(n1nbr_), v1nbr(v1nbr_), n2nbr(n2nbr_), v2nbr(v2nbr_)
 		{
 			init_list_vcc();
@@ -36,6 +36,7 @@ class class_events{
 			       double cons_k1_, double cons_j1_, double cons_u1_, double cons_k2_, double cons_j2_, double cons_u2_);
 		double cal_energy(int* const states_ce);
 	private:
+		int step_write_his;	// timesteps for output to history files
 		int nx, ny, nz;		// system size 
 		int *nA, *nB, *nV, *nI;	// # of atoms, vacancies, instls; pass by pointers
 
