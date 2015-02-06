@@ -31,7 +31,7 @@ class class_events{
 		}
 		
 		// functions
-		void events_main(int& timestep, double& totaltime);
+		void events_main(long long int& timestep, double& totaltime);
 		void input_par(double beta_, double muA_, double muB_, double emA_, double emB_,
 			       double cons_k1_, double cons_j1_, double cons_u1_, double cons_k2_, double cons_j2_, double cons_u2_);
 		double cal_energy(int* const states_ce);
@@ -59,8 +59,8 @@ class class_events{
 		bool is_e2nbr;
 
 		//////functions for all events//////
-		void write_hissol(int timestep, double totaltime, const vector<int> (&actions_sol)[2]);
-		void write_hisvcc(int timestep, double totaltime);
+		void write_hissol(long long int timestep, double totaltime, const vector<int> (&actions_sol)[2]);
+		void write_hisvcc(long long int timestep, double totaltime);
 		double cal_energy(int x1, int y1, int z1, int x2, int y2, int z2); 
 		void init_list_vcc();
 

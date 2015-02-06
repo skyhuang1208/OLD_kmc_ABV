@@ -43,7 +43,7 @@ int main(int nArg, char *Arg[]){
 	events.input_par(par_beta, par_muA, par_muB, par_emA, par_emB, par_consk1, par_consj1, par_consu1, par_consk2, par_consj2, par_consu2);
 
 	cout << "\n########## The Simulation Begins !! ##########" << endl;
-	int    timestep=  ts_bg; 
+	long long int timestep=  ts_bg; 
 	double totaltime= time_bg;
 	int STEP_LOG= par_tstep/2000; cout << "TIMESTEP() TIME(s) ETOTAL(eV)";
 	while((totaltime<= time_bg+par_tend) && (timestep != ts_bg+par_tstep)){
