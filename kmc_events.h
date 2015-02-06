@@ -45,7 +45,8 @@ class class_events{
 		int* const states;	// Don't change the address of this!
 		vector <int> list_vcc;	// A list contains indexs of all vacancies
 		vector <int> list_int;	// A list contains indexs of all interstitials
-		
+		int ix, iy, iz;		// image box of the vacancy ONE V
+
 		vector <int> actions_sol[2]; // A list contains solute atom moves from [0] to [1]
 		
 		int n1nbr, n2nbr;	// number of neighbors

@@ -34,7 +34,10 @@ void class_events::events_main(long long int& timestep, double& totaltime){
 			*(states +  x*ny*nz +  y*nz +  z)= 0;
 
 			list_vcc.at(v_ivcc.at(i))= x*ny*nz + y*nz + z;
-			
+			if((x-vx)>nx/2) ix --; if((x-vx)<-nx/2) ix ++; // ONE V
+			if((y-vy)>ny/2) iy --; if((y-vy)<-ny/2) iy ++;
+			if((z-vz)>nz/2) iz --; if((z-vz)<-nz/2) iz ++;
+
 			if(*(states+vx*ny*nz+vy*nz+vz)==-1){
 				actions_sol[0].push_back( x*ny*nz +  y*nz +  z);
 				actions_sol[1].push_back(vx*ny*nz + vy*nz + vz);
@@ -96,7 +99,7 @@ void class_events::write_hisvcc(long long int timestep, double totaltime){
 	fprintf(his_vcc, "%lu\n", list_vcc.size());
 	fprintf(his_vcc, "T: %lld %e\n", timestep, totaltime);
 	for(int i=0; i<list_vcc.size(); i++){
-		fprintf(his_vcc, "%d\n", list_vcc.at(i));
+		fprintf(his_vcc, "%d %d %d %d\n", list_vcc.at(i), ix, iy, iz); // ONE V
 	}
 }
 
@@ -135,6 +138,7 @@ void class_events::init_list_vcc(){
 			list_vcc.push_back(i_ltcp);
 		}
 	}
+	ix= 0; iy= 0; iz= 0; // ONE V
 
 	if(n_check != *nV) error(2, "(init_list_vcc) Vacancy number inconsistent", 2, n_check, *nV);
 }
