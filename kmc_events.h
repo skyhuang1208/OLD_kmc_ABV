@@ -26,8 +26,8 @@ class class_events{
 			if(NULL==his_sol) error(2, "(class_events) the solute  history file was not opened!");
 			if(NULL==his_vcc) error(2, "(class_events) the vacancy history file was not opened!");
 	
-			actions_sol[0].reserve(1000); 
-			actions_sol[1].reserve(1000);
+			actions_sol[0].reserve((int) (0.1*step_write_his)); // should be much larger than need
+			actions_sol[1].reserve((int) (0.1*step_write_his));
 		}
 		
 		// functions
