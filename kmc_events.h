@@ -32,8 +32,9 @@ class class_events{
 		
 		// functions
 		void events_main(long long int& timestep, double& totaltime);
-		void input_par(double beta_, double muA_, double muB_, double emA_, double emB_,
-			       double cons_k1_, double cons_j1_, double cons_u1_, double cons_k2_, double cons_j2_, double cons_u2_);
+		void input_par(double beta_, double muA_, double muB_, double emA_, double emB_, 
+				double e1AA, double e1BB, double e1AB, double e1AV, double e1BV, double e1VV,
+				double e2AA, double e2BB, double e2AB, double e2AV, double e2BV, double e2VV);
 		double cal_energy(int* const states_ce);
 	private:
 		int step_write_his;	// timesteps for output to history files
@@ -58,7 +59,10 @@ class class_events{
 		double emA, emB;
 		double cons_k1, cons_j1, cons_u1; // Ising model
 		double cons_k2, cons_j2, cons_u2; // Ising model
-		bool is_e2nbr;
+		double cons_h0; 		  // Ising model
+		double kterm;			  // Ising model
+		bool is_e2nbr;		// if considering 2nd nn
+		bool is_o1vcc;		// if only 1 vcc in the system
 
 		//////functions for all events//////
 		void write_hissol(long long int timestep, double totaltime, const vector<int> (&actions_sol)[2]);

@@ -40,7 +40,9 @@ int main(int nArg, char *Arg[]){
 	cout << "\n########## Initializing Events ... ##########" << endl;
 	class_events events(par_step_write_his, par_nx, par_ny, par_nz, &nA, &nB, &nV, &nI, &states[0][0][0], 
 			    sys.n1nbr, sys.v1nbr, sys.n2nbr, sys.v2nbr, par_name_sol, par_name_vcc, par_isrestart); 
-	events.input_par(par_beta, par_muA, par_muB, par_emA, par_emB, par_consk1, par_consj1, par_consu1, par_consk2, par_consj2, par_consu2);
+	events.input_par(par_beta, par_muA, par_muB, par_emA, par_emB, 
+			 par_e1AA, par_e1BB, par_e1AB, par_e1AV, par_e1BV, par_e1VV,
+			 par_e2AA, par_e2BB, par_e2AB, par_e2AV, par_e2BV, par_e2VV);
 
 	cout << "\n########## The Simulation Begins !! ##########" << endl;
 	long long int timestep=  ts_bg; 

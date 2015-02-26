@@ -104,17 +104,35 @@ void class_events::write_hisvcc(long long int timestep, double totaltime){
 }
 
 void class_events::input_par(double beta_, double muA_, double muB_, double emA_, double emB_, 
-			     double cons_k1_, double cons_j1_, double cons_u1_, double cons_k2_, double cons_j2_, double cons_u2_){
+			     double e1AA, double e1BB, double e1AB, double e1AV, double e1BV, double e1VV,
+			     double e2AA, double e2BB, double e2AB, double e2AV, double e2BV, double e2VV){
 	beta= beta_;
 
 	muA= muA_; muB= muB_;
 	emA= emA_; emB= emB_;
 
-	cons_k1= cons_k1_; cons_j1= cons_j1_; cons_u1= cons_u1_;
-	cons_k2= cons_k2_; cons_j2= cons_j2_; cons_u2= cons_u2_;
+	cons_k1= 0.25*(e1AA + e1BB + 2*e1AB) - (e1VV - e1AV - e1BV);
+	cons_u1= 0.25*(e1AA - e1BB) - 0.5*(e1AV - e1BV);
+	cons_j1= 0.25*(e1AA + e1BB - 2*e1AB);
+	
+	cons_k2= 0.25*(e2AA + e2BB + 2*e2AB) - (e2VV - e2AV - e2BV);
+	cons_u2= 0.25*(e2AA - e2BB) - 0.5*(e2AV - e2BV);
+	cons_j2= 0.25*(e2AA + e2BB - 2*e2AB);
+	
+	cons_h0=  (e1AV + e1BV - 2*e1VV) * (*nA + *nB) + (e1AV - e1BV) * (*nA - *nB) + e1VV * nx * ny * nz;
+		+ (e2AV + e2BV - 2*e2VV) * (*nA + *nB) + (e2AV - e2BV) * (*nA - *nB) + e2VV * nx * ny * nz;
 
 	if((0==cons_k2) && (0==cons_j2) && (0==cons_u2)) is_e2nbr= false;
 	else						 is_e2nbr= true;
+
+	if(1==*nV){
+		is_o1vcc= true;
+		kterm= (nx*ny*nz/2 -1) * (cons_k1*n1nbr + cons_k2*n2nbr);
+	}
+	else{
+		is_o1vcc= false;
+		kterm= 0;
+	}
 
 	// print out the parameters to log file
 	cout << "Parameters:" << endl; 
@@ -123,10 +141,16 @@ void class_events::input_par(double beta_, double muA_, double muB_, double emA_
 	printf("mu= %f %f\n", muA, muB);
 	printf("Em= %f %f\n", emA, emB);
 	
-	cout << "Ising formulation constants:" << endl;
+	cout << "Input epsilons:" << endl;
+	printf("1st neighbor (eAA eBB eAB eAV eBV, eVV): %f %f %f %f %f %f\n", e1AA, e1BB, e1AB, e1AV, e1BV, e1VV);
+	printf("2nd neighbor (eAA eBB eAB eAV eBV, eVV): %f %f %f %f %f %f\n", e2AA, e2BB, e2AB, e2AV, e2BV, e2VV);
+	cout << "\nIsing formulation constants:" << endl;
 	printf("Constant K: %f %f\n", cons_k1, cons_k2);
 	printf("Constant J: %f %f\n", cons_j1, cons_j2);
 	printf("Constant U: %f %f\n", cons_u1, cons_u2);
+	printf("Constant H0:   %f\n", cons_h0);
+	if(is_o1vcc)
+		printf("\nThere is only 1 vcc.\nReduce k term into constant %f", kterm);
 }
 
 void class_events::init_list_vcc(){

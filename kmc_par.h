@@ -15,6 +15,8 @@ const long long int par_tstep=           1e10; 	// toal timestep (give a minus s
 const long long int par_confts=   par_tstep/5;	// timestep that output a conf file for restart later
 const long long int par_step_write_his=	  1e4;
 
+const bool par_isrestart=		    false;
+
 const char   par_name_sol[20]=      "history.sol";
 const char   par_name_vcc[20]=      "history.vcc";
 
@@ -28,20 +30,21 @@ const double par_muB=			   6.1e+12; // units: s^-1
 const double par_emA=				 0;
 const double par_emB=				 0;
 
-const double par_consk1=                         0;
-const double par_consj1=                  -0.02366;
-const double par_consu1=                  -0.02366;
-const double par_consk2=                         0;
-const double par_consj2=                 -0.009985;
-const double par_consu2=                 -0.009985;
+// bonding energy parameters
+const double par_e1AA=                           0;
+const double par_e1BB=                           0;
+const double par_e1AB=                     0.04732;
+const double par_e1AV=                     0.04732;
+const double par_e1BV=                           0;
+const double par_e1VV=                           0;
 
-const bool par_isrestart=		     false;
+const double par_e2AA=                           0;
+const double par_e2BB=                           0;
+const double par_e2AB=                     0.01997;
+const double par_e2AV=                     0.01997;
+const double par_e2BV=                           0;
+const double par_e2VV=                           0;
 
-// Bond-formulation parameters
-// 	e1AV= e1VA= 0.04732
-// 	e1AB= e1BA= 0.04732
-// 	e2AV= e2VA= 0.01997
-// 	e2AB= e2BA= 0.01997
 // trapping number: solute atom trapping and intersitial trapping							 
 // 	const int par_trNsol= 3; // trapping number by solute atoms
 // 	const int par_trNint= 3; // trapping number by interstitials
