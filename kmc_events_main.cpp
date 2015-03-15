@@ -111,15 +111,15 @@ void class_events::input_par(double beta_, double muA_, double muB_, double emA_
 	muA= muA_; muB= muB_;
 	emA= emA_; emB= emB_;
 
-	cons_k1= 0.25*(e1AA + e1BB + 2*e1AB) - (e1VV - e1AV - e1BV);
+	cons_k1= 0.25*(e1AA + e1BB + 2*e1AB) + (e1VV - e1AV - e1BV);
 	cons_u1= 0.25*(e1AA - e1BB) - 0.5*(e1AV - e1BV);
 	cons_j1= 0.25*(e1AA + e1BB - 2*e1AB);
 	
-	cons_k2= 0.25*(e2AA + e2BB + 2*e2AB) - (e2VV - e2AV - e2BV);
+	cons_k2= 0.25*(e2AA + e2BB + 2*e2AB) + (e2VV - e2AV - e2BV);
 	cons_u2= 0.25*(e2AA - e2BB) - 0.5*(e2AV - e2BV);
 	cons_j2= 0.25*(e2AA + e2BB - 2*e2AB);
 	
-	cons_h0=  (e1AV + e1BV - 2*e1VV) * (*nA + *nB) + (e1AV - e1BV) * (*nA - *nB) + e1VV * nx * ny * nz;
+	cons_h0=  (e1AV + e1BV - 2*e1VV) * (*nA + *nB) + (e1AV - e1BV) * (*nA - *nB) + e1VV * nx * ny * nz 
 		+ (e2AV + e2BV - 2*e2VV) * (*nA + *nB) + (e2AV - e2BV) * (*nA - *nB) + e2VV * nx * ny * nz;
 
 	if((0==cons_k2) && (0==cons_j2) && (0==cons_u2)) is_e2nbr= false;
