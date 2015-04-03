@@ -112,9 +112,11 @@ void class_system::init_states_array(int nVset, double compA, int* const states0
 	// STATE 0: vacancy, 1: A atom, -1: B atom
 
 	int putV= (nx*ny*nz)/nVset;
+	int Vcount= 0;
 
 	for(int i=0; i<nx*ny*nz; i++){	
-		if((i%putV==0) && (*nV<nVset)){
+		if((i%putV==0) && (Vcount<nVset)){
+			Vcount ++;
 			*(states000 + i)= 0;
 		}
 		else{
